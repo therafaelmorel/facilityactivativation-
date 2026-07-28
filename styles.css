@@ -877,3 +877,383 @@ tbody tr{transition:background .15s ease}tbody tr:hover{background:#fff8f9}butto
   .task-register-row>.register-chevron{display:none}
   .projects-register-footer{padding-left:2px;padding-right:2px;flex-direction:column;gap:6px}
 }
+
+/* V11 — cohesive Administration workspace + more compact Project Team navigation. */
+.team-nav{gap:14px;margin:64px 0 0 8px}
+.team-nav-link{min-height:44px;padding:0 20px;font-size:clamp(15px,.82vw,17px);letter-spacing:-.025em}
+
+.admin-dashboard{
+  --admin-red:#c8102e;
+  --admin-red-soft:#fff4f6;
+  --admin-ink:#0b0c0d;
+  --admin-muted:#74797f;
+  --admin-line:#e8eaed;
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr);
+  width:100%;
+  min-height:100vh;
+  background:var(--admin-red);
+  color:var(--admin-ink);
+  overflow:hidden;
+}
+.admin-dashboard button,.admin-dashboard input{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.admin-sidebar{
+  position:sticky;
+  top:0;
+  height:100vh;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  padding:30px 18px 20px;
+  background:var(--admin-red);
+  color:#fff;
+  overflow:hidden;
+}
+.admin-brand{display:flex;flex-direction:column;gap:5px;padding:0 8px}
+.admin-brand strong{font-size:16px;line-height:1;letter-spacing:-.035em}
+.admin-brand span{font-size:10px;opacity:.78}
+.admin-nav{display:grid;gap:5px;margin-top:48px}
+.admin-nav-link{
+  width:100%;
+  min-height:42px;
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr);
+  align-items:center;
+  gap:10px;
+  padding:0 14px;
+  border:0;
+  border-radius:22px;
+  background:transparent;
+  color:rgba(255,255,255,.84);
+  text-align:left;
+  font-size:11px;
+  font-weight:650;
+  cursor:pointer;
+  transition:background .18s ease,color .18s ease;
+}
+.admin-nav-link i{font-size:18px;text-align:center}
+.admin-nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+.admin-nav-link.active{background:#fff;color:var(--admin-red);box-shadow:0 8px 24px rgba(75,0,14,.1)}
+.admin-access{
+  margin-top:auto;
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr);
+  gap:10px;
+  align-items:flex-start;
+  padding:14px 10px 16px;
+  border-bottom:1px solid rgba(255,255,255,.38);
+  color:#fff;
+}
+.admin-access>i{font-size:21px}
+.admin-access strong,.admin-access small,.admin-profile strong,.admin-profile small{display:block}
+.admin-access strong{font-size:9px}
+.admin-access small{margin-top:4px;color:rgba(255,255,255,.68);font-size:8px;line-height:1.45}
+.admin-profile{
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr) 30px;
+  align-items:center;
+  gap:9px;
+  padding:16px 4px 0;
+}
+.admin-avatar{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:50%;
+  background:var(--admin-red);
+  color:#fff;
+  font-size:9px;
+  font-weight:750;
+}
+.admin-sidebar .admin-avatar{background:#fff;color:var(--admin-red)}
+.admin-profile strong{font-size:9px}
+.admin-profile small{margin-top:3px;color:rgba(255,255,255,.65);font-size:8px}
+.admin-profile button{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:20px;
+  cursor:pointer;
+}
+.admin-workspace{
+  min-width:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+  border-radius:36px 0 0 0;
+  overflow:hidden;
+}
+.admin-topbar{
+  min-height:88px;
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  padding:18px 30px 15px 40px;
+  border-bottom:1px solid var(--admin-line);
+  background:#fff;
+}
+.admin-screen-title>span{
+  display:block;
+  margin-bottom:4px;
+  color:var(--admin-red);
+  font-size:8px;
+  font-weight:750;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.admin-screen-title h1{margin:0;font-size:24px;line-height:1;font-weight:720;letter-spacing:-.045em}
+.admin-top-actions{display:flex;align-items:center;gap:8px}
+.admin-top-actions .team-role-switcher{margin:0 10px 0 0}
+.admin-top-actions .role-tabs{max-width:420px;padding:3px;border-radius:20px}
+.admin-top-actions .role-tab{height:32px;padding:0 10px;font-size:8px}
+.admin-search-trigger,.admin-notification{
+  position:relative;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--admin-line);
+  border-radius:50%;
+  background:#fff;
+  color:#111;
+  font-size:17px;
+  cursor:pointer;
+}
+.admin-notification b{
+  position:absolute;
+  top:-3px;
+  right:-2px;
+  width:14px;
+  height:14px;
+  display:grid;
+  place-items:center;
+  border:2px solid #fff;
+  border-radius:50%;
+  background:var(--admin-red);
+  color:#fff;
+  font-size:6px;
+}
+.admin-content{
+  min-width:0;
+  flex:1;
+  padding:30px 38px 52px 40px;
+  background:#fff;
+  overflow:auto;
+}
+.admin-content>.page-head{
+  min-height:50px;
+  margin:0 0 22px;
+  padding:0 0 20px;
+  border-bottom:1px solid var(--admin-line);
+}
+.admin-content>.page-head>div:first-child>.eyebrow,.admin-content>.page-head>div:first-child>h1{display:none}
+.admin-content>.page-head .sub{max-width:650px;color:var(--admin-muted);font-size:11px;line-height:1.55}
+.admin-content .button{height:34px;padding:0 15px;border-radius:17px;font-size:9px;box-shadow:none}
+.admin-content .button:hover{transform:none}
+.admin-content .button.primary{background:var(--admin-red);border-color:var(--admin-red);box-shadow:none}
+.admin-content .search{
+  min-width:190px;
+  height:34px;
+  border-radius:17px;
+  background:#f6f7f8;
+  border-color:#f6f7f8;
+  font-size:9px;
+}
+.admin-content .chip{height:30px;padding:0 13px;border-radius:15px;background:#fff;font-size:8px}
+.admin-content .chip.active{background:var(--admin-red-soft);border-color:#f3c6ce;color:var(--admin-red)}
+.admin-content .filters{margin-bottom:16px}
+.admin-content .panel,.admin-content .hero-project,.admin-content .assignment{
+  border:1px solid var(--admin-line);
+  border-radius:17px;
+  box-shadow:none;
+  background:#fff;
+}
+.admin-content .panel-head{height:50px;padding:0 18px}
+.admin-content .panel-head h2{font-size:12px}
+.admin-content .panel-body{padding:18px}
+.admin-content table{font-size:9px}
+.admin-content th{
+  height:38px;
+  padding:0 14px;
+  background:#fafafa;
+  color:#73787d;
+  font-size:7px;
+  letter-spacing:.06em;
+}
+.admin-content td{height:48px;padding:8px 14px;border-color:#f0f1f2}
+.admin-content tbody tr:hover{background:#fff7f8}
+.admin-content .task-name{font-size:9px}
+.admin-content .task-meta{font-size:7px}
+.admin-content .status{min-width:70px;padding:5px 8px;border-radius:12px;font-size:7px;text-align:center}
+.admin-content .grid.metrics{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0;
+  margin-bottom:20px;
+  padding:14px 0;
+  border-top:1px solid var(--admin-line);
+  border-bottom:1px solid var(--admin-line);
+}
+.admin-content .metric{
+  min-height:90px;
+  padding:8px 20px;
+  border:0;
+  border-right:1px solid var(--admin-line);
+  border-radius:0;
+  box-shadow:none;
+}
+.admin-content .metric:last-child{border-right:0}
+.admin-content .metric:before{display:none}
+.admin-content .metric .label{color:var(--admin-muted);font-size:7px}
+.admin-content .metric .value{margin:8px 0 3px;font-size:26px;letter-spacing:-.04em}
+.admin-content .metric .hint{font-size:8px}
+.admin-content .toolbar{margin:0 0 14px!important;padding:0;border:0}
+
+/* Admin project control becomes a compact portfolio register. */
+.admin-content .projects-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:0;
+  border-top:1px solid var(--admin-line);
+}
+.admin-content .project-card{
+  display:grid;
+  grid-template-columns:minmax(280px,1.45fr) minmax(150px,.75fr) minmax(260px,1.1fr);
+  align-items:center;
+  gap:24px;
+  min-height:88px;
+  padding:14px 16px;
+  border:0;
+  border-bottom:1px solid var(--admin-line);
+  border-radius:0;
+  box-shadow:none;
+}
+.admin-content .project-card:hover{border-color:var(--admin-line);background:#fff8f9;transform:none;box-shadow:none}
+.admin-content .project-top{align-items:center}
+.admin-content .project-code{font-size:7px}
+.admin-content .project-title{margin-top:4px;font-size:13px}
+.admin-content .project-info{font-size:8px}
+.admin-content .project-card>div:nth-child(2){margin-top:0!important}
+.admin-content .project-card .project-stats{margin-top:0;padding-top:0;border-top:0}
+.admin-content .project-stats strong{font-size:11px}
+.admin-content .project-stats span{font-size:7px}
+.admin-content .progress-line{height:4px}
+
+/* Forms, assignments, people, and audit history share the same flatter density. */
+.admin-content .steps{min-height:52px;margin-bottom:18px;border-radius:16px;background:#fafafa}
+.admin-content .step{padding:13px 10px;font-size:8px}
+.admin-content .step b{width:22px;height:22px}
+.admin-content .input{height:38px;border-radius:10px;background:#fafafa;font-size:9px}
+.admin-content .field-block label,.admin-content .field label{font-size:7px}
+.admin-content .choice{min-height:42px;border-radius:11px;background:#fafafa;font-size:9px}
+.admin-content .choice.yes{border-color:#f0b8c2;background:var(--admin-red-soft)}
+.admin-content .assignment{grid-template-columns:220px minmax(0,1fr);min-height:520px}
+.admin-content .assignment-side{padding:17px 14px;background:#fafafa}
+.admin-content .dept-row{min-height:46px;margin:2px 0;padding:9px 11px;border-radius:10px}
+.admin-content .dept-row.active{background:var(--admin-red);color:#fff}
+.admin-content .assignment-main{padding:22px}
+.admin-content .users-layout{grid-template-columns:minmax(0,1fr) 260px;gap:16px}
+.admin-content .tabs{margin-bottom:17px;gap:22px}
+.admin-content .tab{padding:0 0 10px;font-size:9px}
+.admin-content .department-list{grid-template-columns:1fr;gap:0;padding:5px 16px 12px}
+.admin-content .department{
+  display:grid;
+  grid-template-columns:30px minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  padding:10px 0;
+  border:0;
+  border-bottom:1px solid var(--admin-line);
+}
+.admin-content .department:last-child{border-bottom:0}
+.admin-content .dept-icon{width:28px;height:28px;margin:0;border-radius:50%;font-size:8px}
+.admin-content .activity-filter{
+  gap:0;
+  margin-bottom:18px;
+  padding:0 0 18px;
+  border:0;
+  border-bottom:1px solid var(--admin-line);
+  border-radius:0;
+  background:#fff;
+}
+.admin-content .activity-filter .field-block{padding:0 14px;border-right:1px solid var(--admin-line)}
+.admin-content .activity-filter .field-block:first-child{padding-left:0}
+.admin-content .activity-filter .field-block:last-child{padding-right:0;border-right:0}
+.admin-content .timeline .event{padding-left:22px}
+.admin-content .timeline .event:before{width:7px;height:7px;background:var(--admin-red)}
+.admin-content .event strong{font-size:10px}
+.admin-content .event p,.admin-content .event time{font-size:8px}
+.admin-content .hero-project{padding:22px}
+.admin-content .hero-project h1{font-size:27px!important}
+.admin-content .ring-wrap{transform:scale(.78)}
+.admin-content .detail-grid{grid-template-columns:minmax(0,1fr) 300px}
+.admin-content .info-cell{min-height:75px;padding:14px}
+
+@media(max-width:1180px){
+  .admin-dashboard{grid-template-columns:205px minmax(0,1fr)}
+  .admin-topbar{padding-left:30px}
+  .admin-content{padding-left:30px;padding-right:28px}
+  .admin-top-actions .role-tabs-label{display:none}
+  .admin-content .project-card{grid-template-columns:minmax(240px,1.3fr) minmax(130px,.65fr) minmax(230px,1fr);gap:16px}
+  .admin-content .users-layout{grid-template-columns:1fr}
+  .admin-content .department-list{grid-template-columns:repeat(3,1fr);gap:10px}
+  .admin-content .department{display:block;border:1px solid var(--admin-line);padding:12px}
+  .admin-content .dept-icon{margin-bottom:8px}
+}
+@media(max-width:920px){
+  .admin-dashboard{grid-template-columns:176px minmax(0,1fr)}
+  .admin-sidebar{padding-left:12px;padding-right:12px}
+  .admin-brand strong{font-size:13px}
+  .admin-nav-link{padding:0 10px;font-size:9px}
+  .admin-top-actions .admin-search-trigger{display:none}
+  .admin-content .project-card{grid-template-columns:1fr}
+  .admin-content .project-card .project-stats{max-width:360px}
+  .admin-content .grid.metrics{grid-template-columns:repeat(2,1fr)}
+  .admin-content .metric:nth-child(2){border-right:0}
+  .admin-content .metric:nth-child(-n+2){border-bottom:1px solid var(--admin-line)}
+  .admin-content .assignment{grid-template-columns:1fr}
+  .admin-content .assignment-side{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
+  .admin-content .assignment-side .search{grid-column:1/-1}
+  .admin-content .detail-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .team-nav{margin-top:13px;gap:4px}
+  .team-nav-link{min-height:34px;padding:0 8px;font-size:11px}
+  .admin-dashboard{display:block;overflow:visible;background:#fff}
+  .admin-sidebar{position:relative;width:100%;height:auto;padding:16px;overflow:visible}
+  .admin-brand{padding:0}
+  .admin-nav{display:flex;gap:4px;margin-top:14px;overflow-x:auto}
+  .admin-nav-link{width:auto;min-width:max-content;min-height:34px;display:flex;padding:0 12px}
+  .admin-nav-link i{font-size:14px}
+  .admin-access,.admin-profile{display:none}
+  .admin-workspace{height:auto;min-height:calc(100vh - 110px);border-radius:0;overflow:visible}
+  .admin-topbar{align-items:flex-start;flex-direction:column;padding:20px 18px 16px}
+  .admin-top-actions{width:100%;overflow-x:auto}
+  .admin-top-actions .team-role-switcher{margin-right:0}
+  .admin-top-actions .admin-search-trigger,.admin-top-actions .admin-notification,.admin-top-actions>.admin-avatar{display:none}
+  .admin-content{padding:24px 18px 40px;overflow:visible}
+  .admin-content .page-head,.admin-content .toolbar{align-items:flex-start}
+  .admin-content .page-head>div:last-child{display:flex;flex-wrap:wrap}
+  .admin-content .projects-grid,.admin-content .project-card{display:block}
+  .admin-content .project-card{padding:18px 0}
+  .admin-content .project-card>div:nth-child(2),.admin-content .project-card .project-stats{margin-top:16px!important}
+  .admin-content .grid.metrics{grid-template-columns:1fr}
+  .admin-content .metric{border-right:0;border-bottom:1px solid var(--admin-line)}
+  .admin-content .metric:last-child{border-bottom:0}
+  .admin-content .activity-filter{grid-template-columns:1fr}
+  .admin-content .activity-filter .field-block{padding:8px 0;border-right:0}
+  .admin-content .form-grid,.admin-content .choice-grid{grid-template-columns:1fr}
+  .admin-content .steps{display:block}
+  .admin-content .step{border-bottom:1px solid var(--admin-line)}
+  .admin-content .assignment-side{grid-template-columns:1fr}
+  .admin-content .department-list{grid-template-columns:1fr}
+}
