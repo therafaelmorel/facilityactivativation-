@@ -1,4 +1,6 @@
 const I=(name)=>{const icons={home:'<path d="M3 10.5 9 5l6 5.5V16H5v-5.5"/>',projects:'<path d="M3 5h5l1.5 2H17v9H3z"/>',tasks:'<path d="M5 4h10v12H5z"/><path d="m7.5 8 1 1 2-2M7.5 12h5"/>',library:'<path d="M4 4h3v12H4zM9 4h3v12H9zM14 5l3 10"/>',users:'<path d="M6 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm6-1a2.5 2.5 0 1 0 0-5M1.5 16c0-3 2-5 4.5-5s4.5 2 4.5 5M11 11c2.5 0 4 1.8 4 4"/>',chart:'<path d="M3 16V9h3v7M8 16V5h3v11M13 16V2h3v14"/>',history:'<circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/>',settings:'<circle cx="9" cy="9" r="2.5"/><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M14.3 3.7l-1.4 1.4M5.1 12.9l-1.4 1.4"/>',bell:'<path d="M5 7a4 4 0 0 1 8 0v4l1.5 2h-11L5 11zM7.5 15h3"/>',search:'<circle cx="8" cy="8" r="5"/><path d="m12 12 4 4"/>',plus:'<path d="M9 3v12M3 9h12"/>',chev:'<path d="m7 5 4 4-4 4"/>',filter:'<path d="M2 4h14L11 9v5l-4 2V9z"/>',upload:'<path d="M9 12V3m0 0L6 6m3-3 3 3M3 13v3h12v-3"/>'};return `<span class="icon"><svg viewBox="0 0 18 18">${icons[name]||icons.home}</svg></span>`}
+import '@phosphor-icons/web/regular';
+
 const roles={
   team:{label:'Project team',short:'Team',description:'Assigned projects and task updates',name:'Rafael Morel',initials:'RM',title:'Project Manager',home:'my-work',nav:[['home','Dashboard','my-work'],['projects','My Projects','projects'],['tasks','My Tasks','project-tasks']]},
   admin:{label:'Administrator',short:'Admin',description:'Project setup, assignments and governance',name:'Maya Thompson',initials:'MT',title:'Activation Administrator',home:'projects',nav:[['projects','Project Control','projects'],['plus','Create Project','admin-setup'],['library','Task Library','task-library'],['tasks','Assignments','assignments'],['users','Users & Departments','users'],['history','Activity History','activity']]},
@@ -9,7 +11,7 @@ function saveRole(key){try{localStorage.setItem('facility-demo-role',key)}catch{
 const savedRole=readSavedRole();
 let currentRole=roles[savedRole]?savedRole:'team';
 const role=()=>roles[currentRole]||roles.team;
-function roleTabs(){return `<div class="role-tabs" aria-label="Switch demo role"><span class="role-tabs-label">Switch role</span>${Object.entries(roles).map(([key,r])=>`<button type="button" class="role-tab ${currentRole===key?'active':''}" data-role="${key}" onclick="setRole('${key}')" aria-pressed="${currentRole===key}">${r.label}</button>`).join('')}</div>`}
+function roleTabs(){return `<div class="role-tabs" aria-label="Switch demo role"><span class="role-tabs-label">Switch role</span>${Object.entries(roles).map(([key,r])=>`<button type="button" class="role-tab ${currentRole===key?'active':''}" data-role="${key}" aria-pressed="${currentRole===key}">${r.label}</button>`).join('')}</div>`}
 function layout(title,active,body){const r=role();return `<div class="shell"><aside class="sidebar"><div class="product"><div class="product-mark">FA</div><div><div class="product-name">Facility Activation</div><div class="product-sub">Readiness workspace</div></div></div><div class="role-context"><span>Current workspace</span><strong>${r.label}</strong><small>${r.description}</small></div><nav class="nav">${r.nav.map(n=>`<button type="button" class="nav-link ${active===n[2]?'active':''}" data-screen="${n[2]}">${I(n[0])}<span>${n[1]}</span></button>`).join('')}</nav><div class="permission-note"><span>Access</span><strong>${r.label} permissions</strong><small>${currentRole==='team'?'Update status, notes and evidence only.':currentRole==='admin'?'Create, assign, edit and publish projects.':'Read-only portfolio and project visibility.'}</small></div><div class="sidebar-foot"><div class="user-mini"><div class="avatar">${r.initials}</div><div><strong>${r.name}</strong><span>${r.title}</span></div></div></div></aside><main class="main"><div class="demo-bar"><div><span class="live-dot"></span><strong>Interactive role demo</strong><span class="demo-copy">Select a role to open its dashboard and permissions</span></div>${roleTabs()}</div><header class="topbar"><div class="crumb">Facility Activation <span>/</span> <strong>${title}</strong></div><div class="top-actions"><button type="button" class="text-action" data-screen="sign-in">Choose role</button><button type="button" class="text-action">Notifications <span class="notification-count">3</span></button><div class="avatar">${r.initials}</div></div></header><div class="content">${body}</div></main></div>`}
 const status=(s)=>`<span class="status ${s.toLowerCase().replaceAll(' ','').replace('inprogress','progress').replace('notstarted','not')}">${s}</span>`;
 const btn=(t,c='')=>`<button class="button ${c}">${t}</button>`;
@@ -24,12 +26,38 @@ const teamPriorityRows=[
   ['Confirm Equipment Inventory','Check inventory with tags','Clinical Operations','Jul 30, 2026','In Progress']
 ];
 const teamStatus=(value)=>`<span class="team-status team-status-${value.toLowerCase().replaceAll(' ','-')}">${value}</span>`;
-function teamDashboard(){
+const teamProjects=[
+  {code:'ACT-026',name:'GP7 West',campus:'Milstein Hospital',readiness:72,tasks:18,overdue:3,goLive:'Sep 15',health:'Attention',icon:'ph-buildings'},
+  {code:'ACT-031',name:'Radiology Expansion',campus:'Allen Hospital',readiness:48,tasks:9,overdue:0,goLive:'Sep 15',health:'On Track',icon:'ph-monitor'},
+  {code:'ACT-018',name:'ED Modernization',campus:'Morgan Stanley',readiness:86,tasks:14,overdue:1,goLive:'Sep 15',health:'Attention',icon:'ph-first-aid-kit'},
+  {code:'ACT-034',name:'Ambulatory Infusion',campus:'CUIMC',readiness:35,tasks:7,overdue:0,goLive:'Sep 15',health:'On Track',icon:'ph-drop'},
+  {code:'ACT-011',name:'Cardiac OR Upgrade',campus:'Milstein Hospital',readiness:93,tasks:5,overdue:2,goLive:'Sep 15',health:'At Risk',icon:'ph-heartbeat'},
+  {code:'ACT-029',name:'Outpatient Pharmacy',campus:'Lower Manhattan',readiness:61,tasks:11,overdue:0,goLive:'Sep 15',health:'On Track',icon:'ph-prescription'}
+];
+function teamSidebar(activeScreen){
   const teamNav=[
     ['Dashboard','my-work'],
     ['My Projects','projects'],
     ['My Tasks','project-tasks']
   ];
+  return `<aside class="team-sidebar">
+    <div class="team-brand">
+      <strong>FACILITY ACTIVATION</strong>
+      <span>Readiness Dashboard</span>
+    </div>
+    <nav class="team-nav" aria-label="Project team navigation">
+      ${teamNav.map(([label,screen])=>`<button type="button" class="team-nav-link ${screen===activeScreen?'active':''}" data-screen="${screen}">${label}</button>`).join('')}
+    </nav>
+    <div class="team-profile">
+      <div>
+        <strong>Rafael Morel</strong>
+        <span>Project Manager</span>
+      </div>
+      <button type="button" class="team-signout" data-screen="sign-in" aria-label="Sign out"><i class="ph ph-sign-out"></i></button>
+    </div>
+  </aside>`;
+}
+function teamDashboard(){
   const metrics=[
     ['3','Assigned Projects','Across 2 Campuses','metric-one'],
     ['18','Assigned Tasks','Work requiring action','metric-two'],
@@ -39,22 +67,7 @@ function teamDashboard(){
   const calendarDays=Array.from({length:31},(_,index)=>index+1);
   const calendarOffset=3;
   return `<div class="team-dashboard">
-    <aside class="team-sidebar">
-      <div class="team-brand">
-        <strong>FACILITY ACTIVATION</strong>
-        <span>Readiness Dashboard</span>
-      </div>
-      <nav class="team-nav" aria-label="Project team navigation">
-        ${teamNav.map(([label,screen])=>`<button type="button" class="team-nav-link ${screen==='my-work'?'active':''}" data-screen="${screen}" onclick="navigate('${screen}')">${label}</button>`).join('')}
-      </nav>
-      <div class="team-profile">
-        <div>
-          <strong>Rafael Morel</strong>
-          <span>Project Manager</span>
-        </div>
-        <button type="button" class="team-signout" data-screen="sign-in" aria-label="Sign out"><i class="ph ph-sign-out"></i></button>
-      </div>
-    </aside>
+    ${teamSidebar('my-work')}
 
     <div class="team-workspace">
       <main class="team-center">
@@ -68,7 +81,7 @@ function teamDashboard(){
             <canvas id="team-workload-tracker" width="620" height="620" aria-label="Workload tracker showing assigned projects, assigned tasks, overdue tasks, and tasks with issues"></canvas>
           </div>
           <div class="team-metrics">
-            ${metrics.map(([value,label,hint,tone])=>`<button type="button" class="team-metric" data-metric="${label}" onclick="navigate('${label==='Assigned Projects'?'projects':'project-tasks'}')">
+            ${metrics.map(([value,label,hint,tone])=>`<button type="button" class="team-metric" data-screen="${label==='Assigned Projects'?'projects':'project-tasks'}">
               <span class="team-metric-number ${tone}">${value}</span>
               <span class="team-metric-copy"><strong>${label}</strong><small>${hint}</small></span>
             </button>`).join('')}
@@ -97,7 +110,7 @@ function teamDashboard(){
         <div class="team-utility">
           <label class="team-global-search">
             <i class="ph ph-magnifying-glass"></i>
-            <input id="team-search" type="search" aria-label="Search dashboard" />
+            <input id="team-search" type="search" placeholder="Search" aria-label="Search dashboard" />
           </label>
           <button type="button" class="team-notifications" aria-label="Notifications"><i class="ph ph-bell-simple"></i></button>
           <img class="team-avatar" src="assets/dashboard/rafael-avatar.jpg" alt="Rafael Morel" />
@@ -168,12 +181,146 @@ function teamDashboard(){
     </div>
   </div>`;
 }
+function teamProjectsPage(){
+  return `<div class="team-dashboard team-projects-page">
+    ${teamSidebar('projects')}
+    <main class="team-workspace team-projects-workspace">
+      <header class="team-projects-topbar">
+        <div class="team-projects-heading">
+          <span>Project team workspace</span>
+          <h1>My Projects</h1>
+        </div>
+        <div class="team-projects-actions">
+          <div class="team-role-switcher">${roleTabs()}</div>
+          <button type="button" class="projects-notification team-notifications" aria-label="Notifications"><i class="ph ph-bell-simple"></i><b>3</b></button>
+          <img class="team-avatar" src="assets/dashboard/rafael-avatar.jpg" alt="Rafael Morel" />
+        </div>
+      </header>
+
+      <section class="team-projects-content">
+        <div class="projects-intro">
+          <div>
+            <p>Assigned portfolio</p>
+            <h2>Six active projects, one clear view.</h2>
+            <span>Track readiness, outstanding work, and opening dates without leaving your workspace.</span>
+          </div>
+          <label class="projects-search">
+            <i class="ph ph-magnifying-glass"></i>
+            <input id="projects-search" type="search" placeholder="Search projects" aria-label="Search projects" />
+          </label>
+        </div>
+
+        <div class="projects-filter-bar" role="group" aria-label="Filter projects by health">
+          <button type="button" class="project-filter active" data-project-filter="all"><span>06</span>All projects</button>
+          <button type="button" class="project-filter" data-project-filter="on-track"><span>03</span>On track</button>
+          <button type="button" class="project-filter" data-project-filter="attention"><span>02</span>Attention</button>
+          <button type="button" class="project-filter" data-project-filter="at-risk"><span>01</span>At risk</button>
+        </div>
+
+        <div class="projects-register">
+          <div class="projects-register-head" aria-hidden="true">
+            <span>Project</span><span>Readiness</span><span>My tasks</span><span>Overdue</span><span>Go-live</span><span>Status</span><span></span>
+          </div>
+          <div id="projects-register-body">
+            ${teamProjects.map(project=>{
+              const healthKey=project.health.toLowerCase().replaceAll(' ','-');
+              return `<button type="button" class="project-register-row" data-screen="project-overview" data-project-health="${healthKey}" data-project-search="${project.code} ${project.name} ${project.campus}">
+                <span class="register-project">
+                  <i class="ph ${project.icon}"></i>
+                  <span><small>${project.code}</small><strong>${project.name}</strong><em>${project.campus}</em></span>
+                </span>
+                <span class="register-readiness"><strong>${project.readiness}%</strong><span><b style="width:${project.readiness}%"></b></span></span>
+                <span class="register-stat"><strong>${project.tasks}</strong><small>assigned</small></span>
+                <span class="register-stat ${project.overdue?'has-overdue':''}"><strong>${project.overdue}</strong><small>${project.overdue?'requires action':'clear'}</small></span>
+                <span class="register-date"><strong>${project.goLive}</strong><small>2026</small></span>
+                <span class="project-health project-health-${healthKey}"><i></i>${project.health}</span>
+                <i class="ph ph-caret-right register-chevron"></i>
+              </button>`;
+            }).join('')}
+          </div>
+          <div class="projects-empty" hidden>No projects match this search.</div>
+        </div>
+        <footer class="projects-register-footer"><span id="projects-result-count">Showing all 6 assigned projects</span><span>Last updated today at 2:42 PM</span></footer>
+      </section>
+    </main>
+  </div>`;
+}
+function teamTasksPage(){
+  const rows=[
+    ['Confirm medical equipment inventory','Check inventory with tags','Clinical Operations','Jul 24, 2026','In Progress',true],
+    ['Complete emergency power testing','Resolve final load-bank test','Facilities Engineering','Jul 20, 2026','Blocked',true],
+    ['Validate nurse call system configuration','Complete final device validation','Information Technology','Jul 27, 2026','Not Started',true],
+    ['Schedule life safety inspection','Coordinate final inspection','Facilities Engineering','Jul 29, 2026','Not Started',false],
+    ['Approve staff orientation plan','Confirm department sign-off','Nursing','Aug 03, 2026','Complete',false],
+    ['Complete air balancing report','Upload final testing report','Facilities Engineering','Aug 07, 2026','Not Started',false],
+    ['Confirm medication storage locations','Review approved room list','Pharmacy','Aug 12, 2026','In Progress',false],
+    ['Validate environmental services staffing','Confirm opening coverage','Support Services','Aug 18, 2026','Not Started',false]
+  ];
+  return `<div class="team-dashboard team-tasks-page">
+    ${teamSidebar('project-tasks')}
+    <main class="team-workspace team-projects-workspace">
+      <header class="team-projects-topbar">
+        <div class="team-projects-heading">
+          <span>Project team workspace</span>
+          <h1>My Tasks</h1>
+        </div>
+        <div class="team-projects-actions">
+          <div class="team-role-switcher">${roleTabs()}</div>
+          <button type="button" class="projects-notification team-notifications" aria-label="Notifications"><i class="ph ph-bell-simple"></i><b>3</b></button>
+          <img class="team-avatar" src="assets/dashboard/rafael-avatar.jpg" alt="Rafael Morel" />
+        </div>
+      </header>
+
+      <section class="team-projects-content">
+        <div class="projects-intro">
+          <div>
+            <p>GP7 West · Assigned work</p>
+            <h2>18 tasks requiring your attention.</h2>
+            <span>Review priorities, due dates, and current status without leaving your workspace.</span>
+          </div>
+          <label class="projects-search">
+            <i class="ph ph-magnifying-glass"></i>
+            <input id="tasks-search" type="search" placeholder="Search tasks" aria-label="Search tasks" />
+          </label>
+        </div>
+
+        <div class="projects-filter-bar tasks-filter-bar" role="group" aria-label="Filter assigned tasks">
+          <button type="button" class="task-filter active" data-task-filter="all"><span>284</span>All tasks</button>
+          <button type="button" class="task-filter" data-task-filter="mine"><span>18</span>My tasks</button>
+          <button type="button" class="task-filter" data-task-filter="blocked"><span>07</span>Blocked</button>
+          <button type="button" class="task-filter" data-task-filter="overdue"><span>11</span>Overdue</button>
+          <button type="button" class="task-filter" data-task-filter="complete"><span>204</span>Complete</button>
+        </div>
+
+        <div class="tasks-register">
+          <div class="tasks-register-head" aria-hidden="true">
+            <span>Task</span><span>Responsible department</span><span>Due date</span><span>Status</span><span></span>
+          </div>
+          <div id="tasks-register-body">
+            ${rows.map(row=>{
+              const state=row[4].toLowerCase().replaceAll(' ','-');
+              return `<button type="button" class="task-register-row" data-screen="task-detail" data-task-state="${state}" data-task-overdue="${row[5]}" data-task-search="${row[0]} ${row[1]} ${row[2]}">
+                <span class="register-task-copy"><strong>${row[0]}</strong><small>${row[1]}</small></span>
+                <span class="register-task-department">${row[2]}</span>
+                <span class="register-date"><strong>${row[3]}</strong><small>${row[5]?'requires attention':'scheduled'}</small></span>
+                ${status(row[4])}
+                <i class="ph ph-caret-right register-chevron"></i>
+              </button>`;
+            }).join('')}
+          </div>
+          <div class="tasks-empty" hidden>No tasks match this search.</div>
+        </div>
+        <footer class="projects-register-footer"><span id="tasks-result-count">Showing 8 priority tasks</span><span>284 total assigned tasks</span></footer>
+      </section>
+    </main>
+  </div>`;
+}
 const screens={
 'sign-in':()=>`<div class="signin"><section class="signin-art"><div class="signin-name"><span class="product-mark light">FA</span><span>Facility Activation</span></div><div class="signin-copy"><div class="eyebrow" style="color:white;opacity:.72">Operational readiness</div><h1>One view of every step before opening day.</h1><p>Assign activation work, keep teams focused, and give leadership a clear view of readiness across every project.</p><div class="signin-proof"><div><strong>517</strong><span>Master tasks</span></div><div><strong>15</strong><span>Workstreams</span></div><div><strong>8</strong><span>Activation phases</span></div></div></div><div class="secure-note">Secure organizational access · No patient information</div></section><section class="signin-panel"><div class="login-form role-entry"><div class="entry-kicker">Interactive product demo</div><h2>Choose a role to begin</h2><p class="sub">Each role opens a different workspace with the permissions that person needs.</p><div class="signin-roles">${Object.entries(roles).map(([key,r])=>`<button class="signin-role" data-role="${key}"><span class="signin-role-mark">${r.short.slice(0,1)}</span><span><strong>${r.label}</strong><small>${r.description}</small></span><b>Open view</b></button>`).join('')}</div><div class="signin-divider"><span>or sign in normally</span></div><label class="login-label">Work email</label><input class="login-input" value="rafael.morel@hospital.org"/><button class="login-button">Continue with organization account</button><p class="fine">Demo data is illustrative. Authorized personnel only.</p></div></section></div>`,
 'my-work':()=>currentRole==='team'?teamDashboard():layout('My Work','my-work',`<div class="page-head"><div><div class="eyebrow">Tuesday, July 21</div><h1>Good afternoon, Rafael.</h1><div class="sub">Here is the activation work requiring your attention.</div></div>${btn('View all my tasks')}</div>`),
-'projects':()=>layout('Projects','projects',`<div class="page-head"><div><div class="eyebrow">Portfolio</div><h1>Projects</h1><div class="sub">View assigned projects and current activation readiness.</div></div><div class="row gap"><div class="search">${I('search')} Search projects</div>${btn('Filters')}</div></div><div class="filters"><button class="chip active">All projects · 6</button><button class="chip">On track · 3</button><button class="chip">Attention · 2</button><button class="chip">At risk · 1</button></div><div class="grid projects-grid">${[['ACT-026','GP7 West','Milstein Hospital','72%','18','3','Attention'],['ACT-031','Radiology Expansion','Allen Hospital','48%','9','0','On Track'],['ACT-018','ED Modernization','Morgan Stanley','86%','14','1','Attention'],['ACT-034','Ambulatory Infusion','CUIMC','35%','7','0','On Track'],['ACT-011','Cardiac OR Upgrade','Milstein Hospital','93%','5','2','At Risk'],['ACT-029','Outpatient Pharmacy','Lower Manhattan','61%','11','0','On Track']].map(p=>`<div class="project-card"><div class="project-top"><div><div class="project-code">${p[0]}</div><div class="project-title">${p[1]}</div><div class="project-info">${p[2]} · Go-live Sep 15</div></div>${status(p[6])}</div><div style="margin-top:20px"><div class="row between"><span class="sub">Readiness</span><strong>${p[3]}</strong></div><div class="progress-line" style="width:100%;margin-top:8px"><div class="progress-fill" style="width:${p[3]}"></div></div></div><div class="project-stats"><div><strong>${p[4]}</strong><span>My tasks</span></div><div><strong>${p[5]}</strong><span>Overdue</span></div><div><strong>Sep 15</strong><span>Go-live</span></div></div></div>`).join('')}</div>`),
+'projects':()=>currentRole==='team'?teamProjectsPage():layout('Projects','projects',`<div class="page-head"><div><div class="eyebrow">Portfolio</div><h1>Projects</h1><div class="sub">View assigned projects and current activation readiness.</div></div><div class="row gap"><div class="search">${I('search')} Search projects</div>${btn('Filters')}</div></div><div class="filters"><button class="chip active">All projects · 6</button><button class="chip">On track · 3</button><button class="chip">Attention · 2</button><button class="chip">At risk · 1</button></div><div class="grid projects-grid">${[['ACT-026','GP7 West','Milstein Hospital','72%','18','3','Attention'],['ACT-031','Radiology Expansion','Allen Hospital','48%','9','0','On Track'],['ACT-018','ED Modernization','Morgan Stanley','86%','14','1','Attention'],['ACT-034','Ambulatory Infusion','CUIMC','35%','7','0','On Track'],['ACT-011','Cardiac OR Upgrade','Milstein Hospital','93%','5','2','At Risk'],['ACT-029','Outpatient Pharmacy','Lower Manhattan','61%','11','0','On Track']].map(p=>`<div class="project-card"><div class="project-top"><div><div class="project-code">${p[0]}</div><div class="project-title">${p[1]}</div><div class="project-info">${p[2]} · Go-live Sep 15</div></div>${status(p[6])}</div><div style="margin-top:20px"><div class="row between"><span class="sub">Readiness</span><strong>${p[3]}</strong></div><div class="progress-line" style="width:100%;margin-top:8px"><div class="progress-fill" style="width:${p[3]}"></div></div></div><div class="project-stats"><div><strong>${p[4]}</strong><span>My tasks</span></div><div><strong>${p[5]}</strong><span>Overdue</span></div><div><strong>Sep 15</strong><span>Go-live</span></div></div></div>`).join('')}</div>`),
 'project-overview':()=>layout('GP7 West','projects',`<div class="hero-project"><div class="hero-grid"><div><div class="row gap"><div class="project-code">ACT-026</div>${status('Attention')}</div><h1 style="font-size:32px;margin-top:10px">GP7 West</h1><p class="sub">Milstein Hospital · 7th Floor · Inpatient renovation</p><div class="stat-strip"><div><strong>Sep 15</strong><span>Planned go-live</span></div><div><strong>56 days</strong><span>Until opening</span></div><div><strong>15</strong><span>Workstreams</span></div><div><strong>284</strong><span>Applicable tasks</span></div></div></div><div class="ring-wrap"><div class="ring"></div><div class="ring-text"><strong>72%</strong><span>Activation ready</span></div></div></div></div><div class="tabs"><div class="tab active">Overview</div><div class="tab">Tasks</div><div class="tab">Workstreams</div><div class="tab">Activity</div><div class="tab">Project details</div></div><div class="grid metrics"><div class="metric good"><div class="label">Complete</div><div class="value">204</div><div class="hint">72% of applicable work</div></div><div class="metric"><div class="label">In progress</div><div class="value">42</div><div class="hint">Across 11 departments</div></div><div class="metric alert"><div class="label">Blocked</div><div class="value">7</div><div class="hint">3 critical items</div></div><div class="metric alert"><div class="label">Overdue</div><div class="value">11</div><div class="hint">4 require escalation</div></div></div><div class="chart-grid"><section class="panel"><div class="panel-head"><h2>Readiness by workstream</h2><span class="sub">15 total</span></div><div class="panel-body">${[['Clinical Operations',82],['Facilities Engineering',69],['Information Technology',64],['Regulatory',91],['Support Services',73]].map(x=>`<div class="row" style="gap:15px;margin:14px 0"><span style="width:145px;font-size:11px">${x[0]}</span><div class="progress-line" style="flex:1"><div class="progress-fill" style="width:${x[1]}%"></div></div><strong style="font-size:11px">${x[1]}%</strong></div>`).join('')}</div></section><section class="panel"><div class="panel-head"><h2>Key risks</h2><span class="status risk">4 open</span></div><div class="panel-body"><div class="callout"><strong>Emergency power testing</strong><br><span class="sub">Blocked · 3 days overdue</span></div><div class="note" style="margin-top:10px"><strong>Nurse call configuration</strong><br>Due in 6 days · Not started</div><div class="note" style="margin-top:10px"><strong>Life safety inspection</strong><br>Dependency at risk</div></div></section></div>`),
-'project-tasks':()=>layout('GP7 West / Tasks','project-tasks',`<div class="page-head"><div><div class="eyebrow">ACT-026 · GP7 West</div><h1>Project tasks</h1><div class="sub">284 applicable tasks across 15 activation workstreams.</div></div><div class="row gap">${btn('Export')}${btn('Add task','primary')}</div></div><div class="toolbar"><div class="filters" style="margin:0"><button class="chip active">All · 284</button><button class="chip">My tasks · 18</button><button class="chip">Blocked · 7</button><button class="chip">Overdue · 11</button><button class="chip">Complete · 204</button></div><div class="search">${I('search')} Search tasks</div></div><section class="panel">${table([...taskRows,['Complete air balancing report','Facilities Engineering','Aug 07, 2026','Not Started'],['Confirm medication storage locations','Pharmacy','Aug 12, 2026','In Progress'],['Validate environmental services staffing','Support Services','Aug 18, 2026','Not Started']])}<div class="pagination"><span>Showing 1–8 of 284 tasks</span><span>Previous&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 3 &nbsp;&nbsp; Next</span></div></section>`),
+'project-tasks':()=>currentRole==='team'?teamTasksPage():layout('GP7 West / Tasks','project-tasks',`<div class="page-head"><div><div class="eyebrow">ACT-026 · GP7 West</div><h1>Project tasks</h1><div class="sub">284 applicable tasks across 15 activation workstreams.</div></div><div class="row gap">${btn('Export')}${btn('Add task','primary')}</div></div><div class="toolbar"><div class="filters" style="margin:0"><button class="chip active">All · 284</button><button class="chip">My tasks · 18</button><button class="chip">Blocked · 7</button><button class="chip">Overdue · 11</button><button class="chip">Complete · 204</button></div><div class="search">${I('search')} Search tasks</div></div><section class="panel">${table([...taskRows,['Complete air balancing report','Facilities Engineering','Aug 07, 2026','Not Started'],['Confirm medication storage locations','Pharmacy','Aug 12, 2026','In Progress'],['Validate environmental services staffing','Support Services','Aug 18, 2026','Not Started']])}<div class="pagination"><span>Showing 1–8 of 284 tasks</span><span>Previous&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 3 &nbsp;&nbsp; Next</span></div></section>`),
 'task-detail':()=>layout('Task detail','project-tasks',`<div class="page-head"><div><div class="eyebrow">ACT-026 · FAC-0421</div><h1 class="task-detail-title">Complete emergency power testing for all patient-care areas</h1><div class="row gap">${status('Blocked')}<span class="sub">Critical to opening</span></div></div>${btn('Return to tasks')}</div><div class="detail-grid"><div><div class="info-grid"><div class="info-cell"><label>Responsible department</label><strong>Facilities Engineering</strong></div><div class="info-cell"><label>Assigned to</label><strong>Michael Chen</strong></div><div class="info-cell"><label>Activation phase</label><strong>Systems validation</strong></div><div class="info-cell"><label>Due date</label><strong style="color:var(--red)">July 20, 2026 · Overdue</strong></div><div class="info-cell"><label>Supporting departments</label><strong>Clinical Operations, Safety</strong></div><div class="info-cell"><label>Recommended timeframe</label><strong>2 months pre-opening</strong></div></div><section class="panel" style="margin-top:18px"><div class="panel-head"><h2>Task description</h2></div><div class="panel-body"><p class="sub" style="color:var(--ink)">Confirm emergency circuits, transfer switches, and generator-backed outlets have been tested, documented, and accepted for all patient-care spaces.</p><div class="callout" style="margin-top:18px"><strong>Current blocker</strong><br>Final load-bank test cannot proceed until temporary construction power is removed from the west electrical room.</div></div></section><section class="panel" style="margin-top:18px"><div class="panel-head"><h2>Activity</h2><span class="sub">3 updates</span></div><div class="panel-body timeline"><div class="event"><strong>Status changed to Blocked</strong><p>Michael added a blocker explanation.</p><time>Jul 21, 2026 · 9:42 AM</time></div><div class="event"><strong>Due date updated</strong><p>Changed from July 18 to July 20 by Activation Admin.</p><time>Jul 14, 2026 · 2:18 PM</time></div></div></section></div><aside class="panel"><div class="panel-head"><h2>Update status</h2></div><div class="panel-body"><div class="field"><label>Current status</label><div class="input">Blocked <span>⌄</span></div></div><div class="field"><label>Blocker explanation required</label><div class="input textarea">Temporary construction power remains connected.</div></div><div class="field"><label>Progress note</label><div class="input textarea">Add an update for the activation team...</div></div><div class="field"><label>Supporting evidence</label><button class="button" style="width:100%;justify-content:center">${I('upload')} Upload document or photo</button></div><button class="button primary" style="width:100%;justify-content:center">Save status update</button><p class="fine">Task details and assignments can only be changed by an administrator.</p></div></aside></div>`),
 'admin-setup':()=>layout('Create project','projects',`<div class="page-head"><div><div class="eyebrow">Administration</div><h1>Create activation project</h1><div class="sub">Project profile answers determine which master tasks apply.</div></div>${btn('Save draft')}</div><div class="steps"><div class="step active"><b>1</b>Project profile</div><div class="step"><b>2</b>Generate tasks</div><div class="step"><b>3</b>Review checklist</div><div class="step"><b>4</b>Assignments</div><div class="step"><b>5</b>Publish</div></div><section class="panel"><div class="panel-head"><h2>Project information</h2><span class="sub">Required fields</span></div><div class="panel-body"><div class="form-grid">${[['Project name','GP7 West'],['Campus','CUIMC'],['Building','Milstein Hospital'],['Floor / location','7th Floor West'],['Planned go-live','September 15, 2026'],['Project type','Renovation']].map(f=>`<div class="field-block"><label>${f[0]}</label><div class="input">${f[1]} <span>⌄</span></div></div>`).join('')}</div></div></section><section class="panel" style="margin-top:18px"><div class="panel-head"><h2>Project characteristics</h2><span class="sub">Used to apply task rules</span></div><div class="panel-body"><div class="choice-grid">${['Patient-facing','Inpatient unit','Article 28','Medical gases','Imaging services','Operating rooms','Behavioral health','Leased space','Off-site location'].map((x,i)=>`<div class="choice ${[0,1,2,3].includes(i)?'yes':''}"><span>${x}</span><strong>${[0,1,2,3].includes(i)?'Yes':'No'}</strong></div>`).join('')}</div><div class="callout" style="margin-top:18px"><strong>Estimated checklist</strong><br>Based on these selections, approximately 284 of 517 master tasks will apply.</div></div></section><div style="display:flex;justify-content:flex-end;margin-top:18px">${btn('Continue to generate tasks','primary')}</div>`,true),
 'task-library':()=>layout('Task Library','task-library',`<div class="page-head"><div><div class="eyebrow">Administration</div><h1>Activation task library</h1><div class="sub">Manage the reusable master playbook used to generate project checklists.</div></div><div class="row gap">${btn('Import Excel')}${btn('Add master task','primary')}</div></div><div class="grid metrics"><div class="metric"><div class="label">Master tasks</div><div class="value">517</div><div class="hint">Across 15 workstreams</div></div><div class="metric"><div class="label">Active</div><div class="value">501</div><div class="hint">Available for new projects</div></div><div class="metric alert"><div class="label">Needs review</div><div class="value">13</div><div class="hint">Missing owner or timeframe</div></div><div class="metric"><div class="label">Draft additions</div><div class="value">54</div><div class="hint">Awaiting library approval</div></div></div><div class="toolbar" style="margin-top:20px"><div class="filters" style="margin:0"><button class="chip active">All tasks</button><button class="chip">Clinical Operations</button><button class="chip">Facilities</button><button class="chip">IT</button><button class="chip">Regulatory</button></div><div class="search">${I('search')} Search library</div></div><section class="panel"><table><thead><tr><th>ID</th><th>Master task</th><th>Workstream / phase</th><th>Default owner</th><th>Timeframe</th><th>Rule</th><th></th></tr></thead><tbody>${[['FAC-0421','Complete emergency power testing','Facilities · Validation','Facilities Engineering','2 months pre-open','Patient-facing'],['CLI-0188','Confirm medical equipment inventory','Clinical · Deployment','Clinical Operations','3 months pre-open','All projects'],['IT-0114','Validate nurse call configuration','Technology · Validation','Information Technology','6 weeks pre-open','Inpatient'],['REG-0062','Schedule life safety inspection','Regulatory · Readiness','Facilities Engineering','4 weeks pre-open','Patient-facing'],['NUR-0210','Approve staff orientation plan','People · Training','Nursing','6 weeks pre-open','Clinical area']].map(r=>`<tr>${r.map((c,i)=>`<td class="${i===1?'task-name':''}">${c}</td>`).join('')}<td>${I('chev')}</td></tr>`).join('')}</tbody></table><div class="pagination"><span>Showing 1–5 of 517 master tasks</span><span>Previous&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 3 &nbsp;&nbsp; Next</span></div></section>`,true),
@@ -231,7 +378,6 @@ function drawTeamTracker(){
   });
 }
 function wireTeamInteractions(){
-  document.querySelectorAll('.team-metric').forEach(button=>button.onclick=()=>navigate(button.dataset.metric==='Assigned Projects'?'projects':'project-tasks'));
   const search=document.getElementById('team-search');
   if(search)search.addEventListener('keydown',event=>{if(event.key==='Enter')toast(search.value.trim()?`Searching for “${search.value.trim()}”`:'Enter a search term')});
   document.querySelectorAll('.calendar-nav').forEach(button=>button.onclick=event=>{
@@ -255,6 +401,68 @@ function shiftCalendarMonth(delta){
   month.textContent=months[Math.max(0,Math.min(months.length-1,current+Number(delta)))];
   return false;
 }
+function wireProjectRegister(){
+  const search=document.getElementById('projects-search');
+  const filters=[...document.querySelectorAll('.project-filter')];
+  const rows=[...document.querySelectorAll('.project-register-row')];
+  const empty=document.querySelector('.projects-empty');
+  const resultCount=document.getElementById('projects-result-count');
+  if(!rows.length)return;
+  let activeFilter='all';
+  const update=()=>{
+    const query=(search?.value||'').trim().toLowerCase();
+    let visible=0;
+    rows.forEach(row=>{
+      const healthMatch=activeFilter==='all'||row.dataset.projectHealth===activeFilter;
+      const searchMatch=!query||row.dataset.projectSearch.toLowerCase().includes(query);
+      const show=healthMatch&&searchMatch;
+      row.classList.toggle('is-hidden',!show);
+      if(show)visible+=1;
+    });
+    if(empty)empty.hidden=visible!==0;
+    if(resultCount)resultCount.textContent=visible===6?'Showing all 6 assigned projects':`Showing ${visible} of 6 assigned projects`;
+  };
+  filters.forEach(filter=>filter.addEventListener('click',()=>{
+    activeFilter=filter.dataset.projectFilter;
+    filters.forEach(item=>item.classList.toggle('active',item===filter));
+    update();
+  }));
+  if(search)search.addEventListener('input',update);
+}
+function wireTeamTaskRegister(){
+  const search=document.getElementById('tasks-search');
+  const filters=[...document.querySelectorAll('.task-filter')];
+  const rows=[...document.querySelectorAll('.task-register-row')];
+  const empty=document.querySelector('.tasks-empty');
+  const resultCount=document.getElementById('tasks-result-count');
+  if(!rows.length)return;
+  let activeFilter='all';
+  const update=()=>{
+    const query=(search?.value||'').trim().toLowerCase();
+    let visible=0;
+    rows.forEach(row=>{
+      const state=row.dataset.taskState;
+      const filterMatch=
+        activeFilter==='all'||
+        activeFilter==='mine'||
+        (activeFilter==='blocked'&&state==='blocked')||
+        (activeFilter==='overdue'&&row.dataset.taskOverdue==='true')||
+        (activeFilter==='complete'&&state==='complete');
+      const searchMatch=!query||row.dataset.taskSearch.toLowerCase().includes(query);
+      const show=filterMatch&&searchMatch;
+      row.classList.toggle('is-hidden',!show);
+      if(show)visible+=1;
+    });
+    if(empty)empty.hidden=visible!==0;
+    if(resultCount)resultCount.textContent=`Showing ${visible} of 8 priority tasks`;
+  };
+  filters.forEach(filter=>filter.addEventListener('click',()=>{
+    activeFilter=filter.dataset.taskFilter;
+    filters.forEach(item=>item.classList.toggle('active',item===filter));
+    update();
+  }));
+  if(search)search.addEventListener('input',update);
+}
 function wireInteractions(){
   document.querySelectorAll('.project-card').forEach(el=>{el.setAttribute('tabindex','0');el.onclick=()=>navigate('project-overview')});
   document.querySelectorAll('tbody tr').forEach(el=>{if(currentScreen.includes('tasks')||currentScreen.includes('work'))el.onclick=()=>navigate('task-detail')});
@@ -262,10 +470,12 @@ function wireInteractions(){
   const normalLogin=document.querySelector('.login-button');if(normalLogin)normalLogin.onclick=()=>setRole(currentRole);
   document.querySelectorAll('.button').forEach(el=>{if(el.classList.contains('role-primary'))el.onclick=()=>navigate('admin-setup');else if(el.textContent.includes('Return to tasks')||el.textContent.includes('View all my tasks'))el.onclick=()=>navigate('project-tasks');else el.onclick=()=>toast(`${el.textContent.trim()} — demo action`)})
   wireTeamInteractions();
+  wireProjectRegister();
+  wireTeamTaskRegister();
 }
 function render(){const key=screens[currentScreen]?currentScreen:'sign-in';document.documentElement.dataset.role=currentRole;document.getElementById('app').innerHTML=screens[key]();applyRoleContent(key);wireInteractions();drawTeamTracker()}
 function handleAppNavigation(event){
-  const roleControl=event.target.closest('[data-role]');
+  const roleControl=event.target.closest('button[data-role]');
   if(roleControl){event.preventDefault();setRole(roleControl.dataset.role);return}
   const screenControl=event.target.closest('[data-screen]');
   if(screenControl){event.preventDefault();navigate(screenControl.dataset.screen)}
