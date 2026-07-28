@@ -56,114 +56,116 @@ function teamDashboard(){
       </div>
     </aside>
 
-    <main class="team-center">
-      <header class="team-greeting">
-        <h1>Hello, Rafael</h1>
-        <div class="team-role-switcher">${roleTabs()}</div>
-      </header>
+    <div class="team-workspace">
+      <main class="team-center">
+        <header class="team-greeting">
+          <h1>Hello, Rafael</h1>
+          <div class="team-role-switcher">${roleTabs()}</div>
+        </header>
 
-      <section class="team-overview" aria-label="Project team workload summary">
-        <div class="team-tracker-wrap">
-          <canvas id="team-workload-tracker" width="620" height="620" aria-label="Workload tracker showing assigned projects, assigned tasks, overdue tasks, and tasks with issues"></canvas>
-        </div>
-        <div class="team-metrics">
-          ${metrics.map(([value,label,hint,tone])=>`<button type="button" class="team-metric" data-metric="${label}" onclick="navigate('${label==='Assigned Projects'?'projects':'project-tasks'}')">
-            <span class="team-metric-number ${tone}">${value}</span>
-            <span class="team-metric-copy"><strong>${label}</strong><small>${hint}</small></span>
-          </button>`).join('')}
-        </div>
-      </section>
-
-      <section class="team-priority">
-        <h2>Priority Tasks</h2>
-        <div class="team-table-wrap">
-          <table class="team-priority-table">
-            <thead><tr><th>Task</th><th>Responsible Department</th><th>Due Date</th><th>Status</th></tr></thead>
-            <tbody>
-              ${teamPriorityRows.map(row=>`<tr data-screen="task-detail">
-                <td><strong>${row[0]}</strong><span>${row[1]}</span></td>
-                <td>${row[2]}</td>
-                <td>${row[3]}</td>
-                <td>${teamStatus(row[4])}</td>
-              </tr>`).join('')}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
-
-    <aside class="team-rail">
-      <div class="team-utility">
-        <label class="team-global-search">
-          <i class="ph ph-magnifying-glass"></i>
-          <input id="team-search" type="search" aria-label="Search dashboard" />
-        </label>
-        <button type="button" class="team-notifications" aria-label="Notifications"><i class="ph ph-bell-simple"></i></button>
-        <img class="team-avatar" src="assets/dashboard/rafael-avatar.jpg" alt="Rafael Morel" />
-      </div>
-      <div class="team-date">Tuesday, July 21</div>
-
-      <section class="team-calendar">
-        <div class="rail-heading"><h2>Work calendar</h2><button type="button" aria-label="Calendar options"><i class="ph ph-dots-three"></i></button></div>
-        <div class="calendar-month-row">
-          <strong id="calendar-month">July 2026</strong>
-          <div>
-            <button type="button" class="calendar-nav" data-calendar="-1" aria-label="Previous month"><i class="ph ph-caret-left"></i></button>
-            <button type="button" class="calendar-nav" data-calendar="1" aria-label="Next month"><i class="ph ph-caret-right"></i></button>
+        <section class="team-overview" aria-label="Project team workload summary">
+          <div class="team-tracker-wrap">
+            <canvas id="team-workload-tracker" width="620" height="620" aria-label="Workload tracker showing assigned projects, assigned tasks, overdue tasks, and tasks with issues"></canvas>
           </div>
-        </div>
-        <div class="calendar-grid calendar-weekdays">${['S','M','T','W','T','F','S'].map(day=>`<span>${day}</span>`).join('')}</div>
-        <div class="calendar-grid calendar-days">
-          ${Array.from({length:calendarOffset},()=>'<span></span>').join('')}
-          ${calendarDays.map(day=>`<button type="button" class="${day===20?'filled':day===21?'outlined':day===24?'soft':day===27?'filled light':day===29?'outlined red':''}" data-day="${day}">${day}</button>`).join('')}
-        </div>
-      </section>
+          <div class="team-metrics">
+            ${metrics.map(([value,label,hint,tone])=>`<button type="button" class="team-metric" data-metric="${label}" onclick="navigate('${label==='Assigned Projects'?'projects':'project-tasks'}')">
+              <span class="team-metric-number ${tone}">${value}</span>
+              <span class="team-metric-copy"><strong>${label}</strong><small>${hint}</small></span>
+            </button>`).join('')}
+          </div>
+        </section>
 
-      <section class="team-agenda">
-        <div class="rail-heading">
-          <h2>Tuesday, Jul 21</h2>
-          <button type="button" class="agenda-add" aria-label="Add calendar item"><i class="ph ph-plus"></i></button>
+        <section class="team-priority">
+          <h2>Priority Tasks</h2>
+          <div class="team-table-wrap">
+            <table class="team-priority-table">
+              <thead><tr><th>Task</th><th>Responsible Department</th><th>Due Date</th><th>Status</th></tr></thead>
+              <tbody>
+                ${teamPriorityRows.map(row=>`<tr data-screen="task-detail">
+                  <td><strong>${row[0]}</strong><span>${row[1]}</span></td>
+                  <td>${row[2]}</td>
+                  <td>${row[3]}</td>
+                  <td>${teamStatus(row[4])}</td>
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <aside class="team-rail">
+        <div class="team-utility">
+          <label class="team-global-search">
+            <i class="ph ph-magnifying-glass"></i>
+            <input id="team-search" type="search" aria-label="Search dashboard" />
+          </label>
+          <button type="button" class="team-notifications" aria-label="Notifications"><i class="ph ph-bell-simple"></i></button>
+          <img class="team-avatar" src="assets/dashboard/rafael-avatar.jpg" alt="Rafael Morel" />
         </div>
-        <div class="agenda-list">
+        <div class="team-date">Tuesday, July 21</div>
+
+        <section class="team-calendar">
+          <div class="rail-heading"><h2>Work calendar</h2><button type="button" aria-label="Calendar options"><i class="ph ph-dots-three"></i></button></div>
+          <div class="calendar-month-row">
+            <strong id="calendar-month">July 2026</strong>
+            <div>
+              <button type="button" class="calendar-nav" data-calendar-shift="-1" aria-label="Previous month"><i class="ph ph-caret-left"></i></button>
+              <button type="button" class="calendar-nav" data-calendar-shift="1" aria-label="Next month"><i class="ph ph-caret-right"></i></button>
+            </div>
+          </div>
+          <div class="calendar-grid calendar-weekdays">${['S','M','T','W','T','F','S'].map(day=>`<span>${day}</span>`).join('')}</div>
+          <div class="calendar-grid calendar-days">
+            ${Array.from({length:calendarOffset},()=>'<span></span>').join('')}
+            ${calendarDays.map(day=>`<button type="button" class="${day===20?'filled':day===21?'outlined':day===24?'soft':day===27?'filled light':day===29?'outlined red':''}" data-day="${day}">${day}</button>`).join('')}
+          </div>
+        </section>
+
+        <section class="team-agenda">
+          <div class="rail-heading">
+            <h2>Tuesday, Jul 21</h2>
+            <button type="button" class="agenda-add" aria-label="Add calendar item"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="agenda-list">
+            ${[
+              ['Jul 20','Complete emergency power testing','Facilities Engineering','Blocked','red'],
+              ['Jul 24','Confirm medical equipment inventory','Clinical Operations','In Progress','pink'],
+              ['Jul 27','Validate nurse call system configuration','Information Technology','Not Started','coral'],
+              ['Jul 29','Schedule life safety inspection','Facilities Engineering','Not Started','outline']
+            ].map(item=>`<button type="button" class="agenda-item" data-screen="task-detail">
+              <span class="agenda-dot ${item[4]}"></span>
+              <span><time>${item[0]}</time><strong>${item[1]}</strong><small>${item[2]}</small><em>${item[3]}</em></span>
+              <i class="ph ph-dots-three"></i>
+            </button>`).join('')}
+          </div>
+        </section>
+
+        <section class="team-projects-rail">
+          <div class="rail-heading"><h2>My projects</h2><button type="button" data-screen="projects">View all <i class="ph ph-caret-right"></i></button></div>
           ${[
-            ['Jul 20','Complete emergency power testing','Facilities Engineering','Blocked','red'],
-            ['Jul 24','Confirm medical equipment inventory','Clinical Operations','In Progress','pink'],
-            ['Jul 27','Validate nurse call system configuration','Information Technology','Not Started','coral'],
-            ['Jul 29','Schedule life safety inspection','Facilities Engineering','Not Started','outline']
-          ].map(item=>`<button type="button" class="agenda-item" data-screen="task-detail">
-            <span class="agenda-dot ${item[4]}"></span>
-            <span><time>${item[0]}</time><strong>${item[1]}</strong><small>${item[2]}</small><em>${item[3]}</em></span>
-            <i class="ph ph-dots-three"></i>
+            ['ph-buildings','GP7 West','Milstein Hospital · Go-live Sep 15','72% ready','Attention','72'],
+            ['ph-monitor','Radiology Expansion','Allen Hospital · Go-live Nov 02','48% ready','On Track','48']
+          ].map(project=>`<button type="button" class="rail-project" data-screen="project-overview">
+            <span class="rail-project-icon"><i class="ph ${project[0]}"></i></span>
+            <span class="rail-project-copy"><strong>${project[1]}</strong><small>${project[2]}</small><span class="rail-progress"><b style="width:${project[5]}%"></b></span></span>
+            <span class="rail-project-status"><strong>${project[3]}</strong><small class="${project[4]==='On Track'?'on-track':''}">${project[4]}</small></span>
+            <i class="ph ph-caret-right"></i>
           </button>`).join('')}
-        </div>
-      </section>
+        </section>
 
-      <section class="team-projects-rail">
-        <div class="rail-heading"><h2>My projects</h2><button type="button" data-screen="projects">View all <i class="ph ph-caret-right"></i></button></div>
-        ${[
-          ['ph-buildings','GP7 West','Milstein Hospital · Go-live Sep 15','72% ready','Attention','72'],
-          ['ph-monitor','Radiology Expansion','Allen Hospital · Go-live Nov 02','48% ready','On Track','48']
-        ].map(project=>`<button type="button" class="rail-project" data-screen="project-overview">
-          <span class="rail-project-icon"><i class="ph ${project[0]}"></i></span>
-          <span class="rail-project-copy"><strong>${project[1]}</strong><small>${project[2]}</small><span class="rail-progress"><b style="width:${project[5]}%"></b></span></span>
-          <span class="rail-project-status"><strong>${project[3]}</strong><small class="${project[4]==='On Track'?'on-track':''}">${project[4]}</small></span>
-          <i class="ph ph-caret-right"></i>
-        </button>`).join('')}
-      </section>
-
-      <section class="team-recent">
-        <div class="rail-heading"><h2>Recent activity</h2><button type="button" aria-label="Recent activity options"><i class="ph ph-dots-three"></i></button></div>
-        ${[
-          ['ph-prohibit','Emergency power testing marked Blocked','Facilities Engineering · Jul 20'],
-          ['ph-clipboard-text','Medical equipment inventory updated','Clinical Operations · Jul 21'],
-          ['ph-user-plus','Nurse call configuration assigned','Information Technology · Jul 21'],
-          ['ph-shield-check','Life safety inspection scheduled','Facilities Engineering · Jul 21']
-        ].map((activity,index)=>`<div class="recent-row">
-          <span class="recent-icon ${index===0?'solid':''}"><i class="ph ${activity[0]}"></i></span>
-          <span><strong>${activity[1]}</strong><small>${activity[2]}</small></span>
-        </div>`).join('')}
-      </section>
-    </aside>
+        <section class="team-recent">
+          <div class="rail-heading"><h2>Recent activity</h2><button type="button" aria-label="Recent activity options"><i class="ph ph-dots-three"></i></button></div>
+          ${[
+            ['ph-prohibit','Emergency power testing marked Blocked','Facilities Engineering · Jul 20'],
+            ['ph-clipboard-text','Medical equipment inventory updated','Clinical Operations · Jul 21'],
+            ['ph-user-plus','Nurse call configuration assigned','Information Technology · Jul 21'],
+            ['ph-shield-check','Life safety inspection scheduled','Facilities Engineering · Jul 21']
+          ].map((activity,index)=>`<div class="recent-row">
+            <span class="recent-icon ${index===0?'solid':''}"><i class="ph ${activity[0]}"></i></span>
+            <span><strong>${activity[1]}</strong><small>${activity[2]}</small></span>
+          </div>`).join('')}
+        </section>
+      </aside>
+    </div>
   </div>`;
 }
 const screens={
@@ -232,13 +234,10 @@ function wireTeamInteractions(){
   document.querySelectorAll('.team-metric').forEach(button=>button.onclick=()=>navigate(button.dataset.metric==='Assigned Projects'?'projects':'project-tasks'));
   const search=document.getElementById('team-search');
   if(search)search.addEventListener('keydown',event=>{if(event.key==='Enter')toast(search.value.trim()?`Searching for “${search.value.trim()}”`:'Enter a search term')});
-  document.querySelectorAll('.calendar-nav').forEach(button=>button.addEventListener('click',()=>{
-    const month=document.getElementById('calendar-month');
-    if(!month)return;
-    const months=['June 2026','July 2026','August 2026'];
-    const current=Math.max(0,months.indexOf(month.textContent));
-    month.textContent=months[Math.max(0,Math.min(months.length-1,current+Number(button.dataset.calendar)))];
-  }));
+  document.querySelectorAll('.calendar-nav').forEach(button=>button.onclick=event=>{
+    event.stopPropagation();
+    shiftCalendarMonth(button.dataset.calendarShift);
+  });
   document.querySelectorAll('.calendar-days button').forEach(button=>button.onclick=()=>{
     document.querySelectorAll('.calendar-days button').forEach(day=>day.classList.remove('selected'));
     button.classList.add('selected');
@@ -268,8 +267,6 @@ function render(){const key=screens[currentScreen]?currentScreen:'sign-in';docum
 function handleAppNavigation(event){
   const roleControl=event.target.closest('[data-role]');
   if(roleControl){event.preventDefault();setRole(roleControl.dataset.role);return}
-  const calendarControl=event.target.closest('[data-calendar]');
-  if(calendarControl){event.preventDefault();shiftCalendarMonth(calendarControl.dataset.calendar);return}
   const screenControl=event.target.closest('[data-screen]');
   if(screenControl){event.preventDefault();navigate(screenControl.dataset.screen)}
 }

@@ -37,22 +37,25 @@ tbody tr{transition:background .15s ease}tbody tr:hover{background:#fff8f9}butto
   --team-gray:#767b80;
   --team-line:#eceef0;
   display:grid;
-  grid-template-columns:minmax(310px,19.25vw) minmax(820px,1fr) minmax(360px,20.8vw);
-  min-height:100vh;
+  grid-template-columns:clamp(270px,19.25vw,394px) minmax(0,1fr);
+  width:100%;
+  height:100vh;
+  min-height:0;
   background:var(--team-red);
   color:var(--team-text);
-  overflow-x:auto;
+  overflow:hidden;
 }
 .team-dashboard button,.team-dashboard input{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .team-sidebar{
-  position:sticky;
-  top:0;
+  position:relative;
   height:100vh;
+  min-height:0;
   display:flex;
   flex-direction:column;
   background:var(--team-red);
   color:#fff;
   padding:62px 32px 28px;
+  overflow:hidden;
   z-index:2;
 }
 .team-brand{display:flex;flex-direction:column;gap:4px}
@@ -109,12 +112,26 @@ tbody tr{transition:background .15s ease}tbody tr:hover{background:#fff8f9}butto
   cursor:pointer;
   font-size:40px;
 }
+.team-workspace{
+  min-width:0;
+  height:100vh;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) clamp(320px,20.8vw,426px);
+  align-items:stretch;
+  background:#fff;
+  border-radius:70px 0 0 0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+}
 .team-center{
   position:relative;
   z-index:3;
   min-width:0;
+  min-height:100%;
   background:#fff;
-  border-radius:70px 0 0 70px;
+  border-radius:0;
   padding:48px 50px 42px 78px;
 }
 .team-greeting{
@@ -244,12 +261,14 @@ tbody tr{transition:background .15s ease}tbody tr:hover{background:#fff8f9}butto
   position:relative;
   z-index:4;
   min-width:0;
+  min-height:100%;
   background:#fff;
   padding:45px 28px 30px 18px;
   box-shadow:-18px 0 42px rgba(24,29,33,.035);
 }
 .team-utility{display:grid;grid-template-columns:minmax(150px,1fr) 54px 72px;align-items:center;gap:8px}
 .team-global-search{
+  min-width:0;
   height:68px;
   display:flex;
   align-items:center;
@@ -259,7 +278,7 @@ tbody tr{transition:background .15s ease}tbody tr:hover{background:#fff8f9}butto
   border-radius:36px 0 0 36px;
 }
 .team-global-search i{font-size:31px;color:#111;background:#fff;border-radius:50%;padding:3px}
-.team-global-search input{width:100%;height:44px;border:0;border-radius:24px;background:#fff;color:#111;padding:0 14px;font-size:14px;outline:0}
+.team-global-search input{width:100%;min-width:0;height:44px;border:0;border-radius:24px;background:#fff;color:#111;padding:0 14px;font-size:14px;outline:0}
 .team-notifications{
   width:54px;
   height:54px;
@@ -348,8 +367,9 @@ tbody tr{transition:background .15s ease}tbody tr:hover{background:#fff8f9}butto
 }
 .rail-project:last-child{border-bottom:0}
 .rail-project-icon{width:42px;height:42px;border-radius:6px;background:#fff4f5;color:var(--team-red-2);display:grid;place-items:center;font-size:24px}
+.rail-project-copy{min-width:0}
 .rail-project-copy strong{display:block;font-size:12px}
-.rail-project-copy small{display:block;color:#7d8186;font-size:9px;margin-top:4px;white-space:nowrap}
+.rail-project-copy small{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;color:#7d8186;font-size:9px;margin-top:4px;white-space:nowrap}
 .rail-progress{display:block;width:100%;height:3px;margin-top:10px;background:#e9ebed}
 .rail-progress b{display:block;height:100%;background:var(--team-red-2)}
 .rail-project-status{text-align:right}
@@ -363,45 +383,77 @@ tbody tr{transition:background .15s ease}tbody tr:hover{background:#fff8f9}butto
 .recent-row strong{display:block;font-size:11px;font-weight:500;line-height:1.2}
 .recent-row small{display:block;color:#82868a;font-size:9px;margin-top:4px}
 @media(max-width:1550px){
-  .team-dashboard{grid-template-columns:270px minmax(720px,1fr) 280px}
+  .team-dashboard{grid-template-columns:270px minmax(0,1fr)}
   .team-sidebar{padding:46px 24px 26px}
   .team-nav{margin:92px -24px 0 12px;gap:34px}
   .team-nav-link{min-height:66px;padding:0 28px}
-  .team-center{padding:38px 34px 36px 54px;border-radius:54px 0 0 54px}
-  .team-overview{grid-template-columns:minmax(440px,1.3fr) minmax(250px,.7fr);gap:16px;min-height:520px}
-  .team-metrics{gap:32px}
+  .team-workspace{grid-template-columns:minmax(0,1fr) 280px;border-radius:54px 0 0 0}
+  .team-center{padding:34px 34px 24px 54px}
+  .team-greeting{min-height:88px}
+  .team-overview{grid-template-columns:minmax(420px,1.3fr) minmax(235px,.7fr);gap:14px;min-height:430px}
+  .team-tracker-wrap{max-width:470px}
+  .team-metrics{gap:24px}
   .team-metric{grid-template-columns:66px 1fr;gap:15px}
   .team-metric-number{width:66px;height:66px;font-size:25px}
   .team-metric-copy strong{font-size:20px}
-  .team-rail{padding:32px 19px 24px 13px}
-  .team-utility{grid-template-columns:minmax(130px,1fr) 48px 62px}
-  .team-global-search{height:58px}
-  .team-notifications{width:48px;height:48px;border-width:6px}
-  .team-avatar{width:62px;height:62px}
-  .team-date{margin:14px 0 20px 10px}
-  .team-rail section{padding-bottom:11px;margin-bottom:11px}
-  .calendar-month-row{margin:14px 0 9px}
-  .calendar-weekdays{margin-bottom:6px;font-size:9px}
-  .calendar-days{row-gap:4px}
-  .calendar-days button{width:24px;height:24px;font-size:10px}
-  .agenda-list{margin-top:5px}
-  .agenda-item{gap:7px;padding:5px 0}
-  .agenda-item time{font-size:10px;margin-bottom:2px}
-  .agenda-item strong{font-size:10px}
-  .agenda-item small{font-size:8px;margin-top:2px}
-  .agenda-item em{font-size:8px;margin-top:2px}
-  .rail-project{padding:9px 0}
-  .recent-row{padding:5px 0}
+  .team-priority{margin-top:0}
+  .team-priority h2{margin-left:20px;font-size:18px}
+  .team-priority-table thead th{padding:7px 12px;font-size:9px}
+  .team-priority-table thead th:first-child{width:39%}
+  .team-priority-table thead th:nth-child(2){width:30%}
+  .team-priority-table thead th:nth-child(3){width:15%}
+  .team-priority-table thead th:last-child{width:16%}
+  .team-priority-table tbody td{padding:10px 12px 7px;font-size:10px}
+  .team-priority-table tbody td:first-child span{margin-top:3px;font-size:8px}
+  .team-status{min-width:82px;height:22px;padding:0 5px;font-size:9px}
+  .team-rail{padding:24px 14px 18px 12px}
+  .team-utility{grid-template-columns:minmax(0,1fr) 44px 54px;gap:6px}
+  .team-global-search{height:52px;padding:0 7px 0 10px;gap:6px}
+  .team-global-search i{font-size:22px;padding:2px}
+  .team-global-search input{height:34px;padding:0 8px;font-size:11px}
+  .team-notifications{width:44px;height:44px;border-width:5px;font-size:19px}
+  .team-avatar{width:54px;height:54px}
+  .team-date{margin:10px 0 14px 8px;font-size:18px}
+  .team-rail section{padding:0 6px 9px;margin-bottom:9px}
+  .rail-heading h2{font-size:14px}
+  .calendar-month-row{margin:10px 0 6px}
+  .calendar-month-row strong{font-size:14px}
+  .calendar-nav{width:23px;height:23px;font-size:11px}
+  .calendar-weekdays{margin-bottom:4px;font-size:8px}
+  .calendar-days{row-gap:2px}
+  .calendar-days button{width:21px;height:21px;font-size:9px}
+  .agenda-add{width:28px;height:28px!important;font-size:16px!important}
+  .agenda-list{margin-top:3px}
+  .agenda-item{grid-template-columns:13px minmax(0,1fr) 14px;gap:6px;padding:3px 0}
+  .agenda-dot{width:10px;height:10px}
+  .agenda-item time{font-size:9px;margin-bottom:1px}
+  .agenda-item strong{font-size:9px}
+  .agenda-item small{font-size:7px;margin-top:1px}
+  .agenda-item em{font-size:7px;margin-top:1px}
+  .agenda-item em:before{width:4px;height:4px;margin-right:4px}
+  .rail-project{grid-template-columns:34px minmax(0,1fr) 52px 12px;gap:7px;padding:7px 0}
+  .rail-project-icon{width:34px;height:34px;font-size:19px}
+  .rail-project-copy strong{font-size:9px}
+  .rail-project-copy small{font-size:7px;margin-top:2px}
+  .rail-progress{margin-top:6px}
+  .rail-project-status strong{font-size:8px}
+  .rail-project-status small{font-size:7px;margin-top:3px}
+  .recent-row{grid-template-columns:30px minmax(0,1fr);gap:7px;padding:3px 0}
+  .recent-icon{width:28px;height:28px;font-size:15px}
+  .recent-row strong{font-size:8px}
+  .recent-row small{font-size:7px;margin-top:2px}
 }
 @media(max-width:1180px){
-  .team-dashboard{grid-template-columns:230px minmax(650px,1fr) 320px}
+  .team-dashboard{grid-template-columns:220px minmax(0,1fr)}
+  .team-workspace{grid-template-columns:minmax(0,1fr) 270px}
   .team-nav{gap:24px}
   .team-center{padding-left:38px;padding-right:28px}
-  .team-greeting{min-height:98px}
+  .team-greeting{min-height:84px}
   .team-role-switcher .role-tabs{max-width:310px;overflow:auto}
   .team-role-switcher .role-tab{padding:0 9px}
-  .team-overview{grid-template-columns:360px 280px;min-height:460px}
-  .team-metrics{gap:24px}
+  .team-overview{grid-template-columns:minmax(0,1.15fr) minmax(170px,.85fr);gap:10px;min-height:400px}
+  .team-tracker-wrap{max-width:370px}
+  .team-metrics{gap:18px}
   .team-metric{grid-template-columns:58px 1fr}
   .team-metric-number{width:58px;height:58px;font-size:22px}
   .team-rail{padding-left:10px;padding-right:14px}
