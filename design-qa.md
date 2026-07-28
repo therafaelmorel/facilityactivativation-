@@ -1,74 +1,86 @@
 **Comparison Target**
 
-- Source visual truth: `/workspace/scratch/988d298fbca5/upload/PM.png`
-- Source pixels: 2048 × 1362
-- Browser implementation: Cloud Browser Chrome tab 3 at `http://terminal.local:4173/`
-- Implementation capture: 1363 × 936 CSS pixels and 1363 × 936 image pixels at device scale factor 1
-- Combined comparison evidence: Cloud Browser Chrome tab 4 at `http://terminal.local:4173/qa-compare.html`
-- State: Project team selected; Dashboard active; July 2026 calendar state
-- Density normalization: the 2048 × 1362 source was scaled with aspect ratio preserved into a 654.5 × 449.45 comparison frame. The 1363 × 936 implementation was rendered at its native CSS size and scaled to the same frame. A second comparison enlarged the source and implementation priority-table regions.
+- Dashboard source visual truth: `/workspace/scratch/988d298fbca5/upload/PM.png`
+- Approved Projects source visual truth: `/workspace/scratch/988d298fbca5/facilityactivativation-repo/projects-implementation.jpg`
+- Browser-rendered Dashboard screenshot: `/workspace/scratch/facility-dashboard-final.jpg`
+- Browser-rendered Projects screenshot: `/workspace/scratch/facility-projects-final.jpg`
+- Dashboard side-by-side evidence: `/workspace/scratch/988d298fbca5/facilityactivativation-repo/dashboard-design-comparison.jpg`
+- Projects side-by-side evidence: `/workspace/scratch/988d298fbca5/facilityactivativation-repo/projects-final-comparison.jpg`
+- Source pixels: Dashboard 2048 × 1362; Projects 1363 × 936.
+- Implementation pixels and CSS viewport: 1363 × 936 at device scale factor 1.
+- State: Project Team selected; Dashboard active and My Projects active in their respective captures.
+- Density normalization: the Dashboard source and implementation were proportionally fit into equal 1024 × 681 frames on a 2048 × 681 comparison canvas. Projects was compared at matching 1363 × 936 dimensions on a 2726 × 936 canvas.
 
 **Findings**
 
-- No actionable P0, P1, or P2 mismatches remain.
-- Fonts and typography: Inter, weights, hierarchy, and wrapping follow the Figma reference. The right rail uses responsive type scaling at 1363 px so its full content fits without collision.
-- Spacing and layout rhythm: the red sidebar, white center, tracker, metrics, task table, and right rail retain the reference proportions. The lower-left white curve was intentionally removed per the requested revision.
-- Colors and visual tokens: the hospital red, four tracker tones, white surfaces, gray tracks, borders, and status colors match the source direction.
-- Image quality and asset fidelity: the supplied Rafael avatar remains sharp and correctly cropped. The workload tracker stays a native data visualization and renders cleanly at device scale factor 1.
-- Copy and content: dashboard labels, metrics, calendar, tasks, projects, and recent activity match the selected reference.
+- No actionable P0, P1, or P2 issues remain.
+- Fonts and typography: Inter is used throughout. Headings, navigation labels, project and task names, metadata, metrics, and status labels retain the approved hierarchy without oversized text or broken wrapping.
+- Spacing and layout rhythm: the compact red sidebar, white workspace, workload tracker, metric stack, Priority Tasks table, and right rail fit inside the 1363 × 936 viewport. The calendar does not overlap the table, and the Projects register fits all six rows without horizontal clipping.
+- Colors and visual tokens: hospital red, white, pale red icon fields, tracker tones, gray dividers, progress bars, and semantic health/status colors match the approved Project Team direction.
+- Image quality and asset fidelity: the Rafael avatar remains sharp and correctly cropped. Phosphor icons now load from the bundled local font and render correctly in the search, notification, calendar, project, activity, and sign-out controls.
+- Copy and content: all six projects retain their original codes, facilities, readiness, assigned-task totals, overdue totals, go-live dates, and health states. My Tasks retains the source task names, departments, due dates, and statuses.
+- Intentional adaptation: the Dashboard implementation is slightly denser than the original 2048-pixel mock at the tested 1363-pixel viewport. This directly addresses the user's request to reduce the chart, calendar, and task scale while preserving the same composition.
+
+**Focused Region Evidence**
+
+- Dashboard header and rail: the malformed white/red cluster was replaced with distinct search, notification, and avatar controls; all icons are visible.
+- Dashboard table boundary: all six Priority Task rows remain inside the center column, with no overlap from the calendar rail.
+- Sidebar: the active state is one clean white pill with no decorative shapes protruding into the workspace.
+- Projects register: the fresh capture matches the approved register layout and improves it by restoring the previously missing icons.
+- My Tasks continuity: Dashboard, My Projects, and My Tasks now use the same red sidebar, white workspace, header scale, filters, and row treatment.
 
 **Comparison History**
 
-- Initial pass — blocked:
-  - P1: the page itself scrolled while the sidebar used sticky positioning, creating inconsistent sidebar behavior.
-  - P1: task status pills extended outside their table cells and were clipped where the center met the right rail.
-  - P2: the search utility and project rows were compressed inside the right rail.
-  - P2: the white center used a lower-left radius that made the scrolling edge look curved.
-- Fixes applied:
-  - Grouped the center and right rail into one white `.team-workspace` scroll surface.
-  - Locked the red sidebar to the viewport with hidden overflow.
-  - Removed horizontal page overflow and moved vertical overflow to the white workspace only.
-  - Rebalanced the responsive columns, table cell padding, status widths, utility controls, calendar, project rows, and recent activity.
-  - Changed the white workspace radius to top-left only.
-  - Removed duplicate calendar navigation handling.
-- Post-fix evidence:
-  - Document dimensions equal the 1363 × 936 viewport.
-  - Sidebar height and scroll height are both 936 px, with `overflow-y: hidden`.
-  - The white workspace is the only element configured for vertical scrolling.
-  - Center/right-rail overlap is 0 px.
-  - All six task status pills remain inside the center content boundary.
-  - The combined full-view and priority-table comparison shows no overlap or clipped content.
+- Initial Dashboard pass — blocked:
+  - P1: the workload tracker and metric stack were oversized.
+  - P1: the calendar rail covered or visually cut into Priority Tasks.
+  - P1: the active sidebar state used protruding white decorative shapes.
+  - P1: the utility controls and Phosphor icons rendered as blank shapes.
+  - P1 interaction defect: inline and delegated handlers caused navigation and role changes to execute twice.
+- Fixes made:
+  - Reduced the sidebar, tracker, metrics, calendar, and table scale at the desktop breakpoint.
+  - Kept the table in the center column and the calendar in a fixed right rail with zero overlap.
+  - Replaced the active-state construction with one rounded white pill.
+  - Rebuilt the calendar utility strip as separate search, notification, and avatar controls.
+  - Restored the bundled Phosphor icon stylesheet.
+  - Removed duplicate inline navigation and role handlers.
+- Initial cross-screen pass — blocked:
+  - P1: My Tasks still opened the older gray application shell and legacy sidebar.
+  - P2: the Project Team visual language stopped when moving beyond Dashboard or Projects.
+- Fixes made:
+  - Rebuilt My Tasks inside the same Project Team workspace.
+  - Added working search, All/My/Blocked/Overdue/Complete filters, and task-detail navigation.
+- Post-fix visual evidence:
+  - Browser viewport and document dimensions are both 1363 × 936 on Dashboard and Projects.
+  - Side-by-side comparisons show no overlap, clipping, malformed selected state, or missing icon assets.
+  - Projects remains visually equivalent to the approved implementation reference.
 
 **Primary Interactions Tested**
 
-- Project team role selection opens the dashboard.
-- Existing role selector remains functional.
-- Dashboard search returns its visible confirmation.
-- Previous and next calendar controls update the month once per click.
-- My Projects navigation opens the assigned-projects screen.
-- Selecting Project team from the role control returns to the dashboard.
+- Project Team entry opens Dashboard.
+- Dashboard, My Projects, and My Tasks navigate within the consistent Project Team shell.
+- Dashboard metric links open Projects or Tasks.
+- Calendar previous/next controls update the displayed month.
+- Calendar day selection, notification, add-item, project rail, agenda, and task rows respond.
+- Projects search returns Radiology Expansion only.
+- Projects At Risk filter returns Cardiac OR Upgrade only.
+- Tasks search returns emergency power testing only.
+- Tasks Overdue filter returns the three overdue priority rows.
+- Project and task rows open their respective detail views.
+- Administrator and Project Team role switching both work and render once per selection.
 
 **Console Check**
 
-- No application-origin console errors were reported.
-- Browser-extension metadata errors were present and excluded because they did not originate from the application.
+- No application-origin console errors or warnings.
+- Browser-extension metadata errors were excluded because they do not originate from the application.
 
-**Open Questions**
+**Build Check**
 
-- None.
-
-**Implementation Checklist**
-
-- Fixed sidebar remains stationary.
-- White workspace owns scrolling.
-- No horizontal page overflow.
-- No center/right-rail overlap.
-- Straight lower workspace edge.
-- Responsive table and right rail fit at the tested viewport.
-- Build and primary interactions pass.
+- `git diff --check` passes.
+- `npm run build` passes with Vite 7.3.6.
 
 **Follow-up Polish**
 
-- None required for this revision.
+- P3: future detailed Project Overview and Task Detail screens can be restyled to use the same compact red Project Team shell.
 
 final result: passed
